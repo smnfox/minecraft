@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint --fix",
     "preview": "vite preview"
   },
@@ -17,7 +17,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "three": "^0.174.0",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.3",
+    "gh-pages": "^6.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
