@@ -27,6 +27,7 @@ export default tseslint.config(
       ],
       '@stylistic/semi': 'error',
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/quotes': ['error', 'single'],
     },
   },
 );
