@@ -1,5 +1,22 @@
 import * as THREE from 'three';
 import {Block, BlockName, ResourceBlock} from './types';
+import cactus_side from './assets/textures/cactus_side.png';
+import cactus_top from './assets/textures/cactus_top.png';
+import dirt from './assets/textures/dirt.png';
+import grass from './assets/textures/grass.png';
+import grass_side from './assets/textures/grass_side.png';
+import coal_ore from './assets/textures/coal_ore.png';
+import iron_ore from './assets/textures/iron_ore.png';
+import jungle_tree_side from './assets/textures/jungle_tree_side.png';
+import jungle_tree_top from './assets/textures/jungle_tree_top.png';
+import jungle_leaves from './assets/textures/jungle_leaves.png';
+import leaves from './assets/textures/leaves.png';
+import tree_side from './assets/textures/tree_side.png';
+import tree_top from './assets/textures/tree_top.png';
+import sand from './assets/textures/sand.png';
+import snow from './assets/textures/snow.png';
+import snow_side from './assets/textures/snow_side.png';
+import stone  from './assets/textures/stone.png';
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -12,23 +29,23 @@ function loadTexture(path: string) {
 }
 
 const textures: Record<string, THREE.Texture> = {
-  cactusSide: loadTexture('./public/assets/textures/cactus_side.png'),
-  cactusTop: loadTexture('./public/assets/textures/cactus_top.png'),
-  dirt: loadTexture('./public/assets/textures/dirt.png'),
-  grass: loadTexture('./public/assets/textures/grass.png'),
-  grassSide: loadTexture('./public/assets/textures/grass_side.png'),
-  coalOre: loadTexture('./public/assets/textures/coal_ore.png'),
-  ironOre: loadTexture('./public/assets/textures/iron_ore.png'),
-  jungleTreeSide: loadTexture('./public/assets/textures/jungle_tree_side.png'),
-  jungleTreeTop: loadTexture('./public/assets/textures/jungle_tree_top.png'),
-  jungleLeaves: loadTexture('./public/assets/textures/jungle_leaves.png'),
-  leaves: loadTexture('./public/assets/textures/leaves.png'),
-  treeSide: loadTexture('./public/assets/textures/tree_side.png'),
-  treeTop: loadTexture('./public/assets/textures/tree_top.png'),
-  sand: loadTexture('./public/assets/textures/sand.png'),
-  snow: loadTexture('./public/assets/textures/snow.png'),
-  snowSide: loadTexture('./public/assets/textures/snow_side.png'),
-  stone: loadTexture('./public/assets/textures/stone.png'),
+  cactusSide: loadTexture(cactus_side),
+  cactusTop: loadTexture(cactus_top),
+  dirt: loadTexture(dirt),
+  grass: loadTexture(grass),
+  grassSide: loadTexture(grass_side),
+  coalOre: loadTexture(coal_ore),
+  ironOre: loadTexture(iron_ore),
+  jungleTreeSide: loadTexture(jungle_tree_side),
+  jungleTreeTop: loadTexture(jungle_tree_top),
+  jungleLeaves: loadTexture(jungle_leaves),
+  leaves: loadTexture(leaves),
+  treeSide: loadTexture(tree_side),
+  treeTop: loadTexture(tree_top),
+  sand: loadTexture(sand),
+  snow: loadTexture(snow),
+  snowSide: loadTexture(snow_side),
+  stone: loadTexture(stone),
 };
 
 export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
