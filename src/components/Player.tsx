@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import * as RAPIER from '@dimforge/rapier3d-compat';
+import {QueryFilterFlags} from '@dimforge/rapier3d-compat';
 import {CapsuleCollider, RigidBody, useRapier} from '@react-three/rapier';
 import {RefObject, useRef} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {getPlayerPosition, setPlayerPosition} from '../gameStore.ts';
 import {useKeyboardControls} from '@react-three/drei';
-import {chunkSize} from "../worldParams.ts";
+import {chunkSize} from '../worldParams.ts';
 
 const MOVE_SPEED = 4;
 const direction = new THREE.Vector3();
@@ -16,7 +17,7 @@ export const Player = () => {
   const playerRef: RefObject<RAPIER.RigidBody | null> = useRef(null);
   const [, get] = useKeyboardControls();
   const storePos = getPlayerPosition();
-  const startPosition = {x: storePos.x, y: chunkSize.height + 1, z: storePos.z};
+  const startPosition = {x: storePos.x, y: chunkSize.height + 100, z: storePos.z};
 
   const rapier = useRapier();
 
@@ -35,7 +36,7 @@ export const Player = () => {
 
     // jumping
     const world: RAPIER.World = rapier.world;
-    const ray = world.castRay(new RAPIER.Ray(playerRef.current.translation(), { x: 0, y: -1, z: 0 }));
+    const ray = world.castRay(new RAPIER.Ray(playerRef.current.translation(), { x: 0, y: -1, z: 0 }), 1.5, false, QueryFilterFlags.ONLY_FIXED);
     const grounded = ray && ray.collider && Math.abs(ray.timeOfImpact) <= 1.5;
 
     if (jump && grounded) doJump();
@@ -44,9 +45,9 @@ export const Player = () => {
     const {x, y, z} = playerRef.current.translation();
     state.camera.position.set(x, y, z);
     const fixedPosition = {
-      x: Number(x.toFixed()),
-      y: Number(y.toFixed()),
-      z: Number(z.toFixed()),
+      x: Math.floor(x),
+      y: Math.floor(y),
+      z: Math.floor(z),
     };
     setPlayerPosition({x: fixedPosition.x, y: fixedPosition.y, z: fixedPosition.z});
   });

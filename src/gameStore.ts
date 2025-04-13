@@ -1,7 +1,7 @@
 import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
 import * as THREE from 'three';
-import {chunkSize} from "./worldParams.ts";
+import {chunkSize} from './worldParams.ts';
 
 interface GameState {
   playerPosition: THREE.Vector3Like;

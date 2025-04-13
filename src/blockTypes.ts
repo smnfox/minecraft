@@ -17,6 +17,24 @@ import sand from './assets/textures/sand.png';
 import snow from './assets/textures/snow.png';
 import snow_side from './assets/textures/snow_side.png';
 import stone  from './assets/textures/stone.png';
+import atlas from './assets/textures/atlas.png';
+import {texturesCoords, texturesMeta} from './textureAtlas.ts';
+
+const normalizedAtlasWidth = 1 / texturesMeta.w;
+const normalizedAtlasHeight = 1 / texturesMeta.h;
+
+const normalizeAtlasCoordinate = (x: number, y: number)=>  {
+  return new THREE.Vector2(x * normalizedAtlasWidth, 1 - y * normalizedAtlasHeight);
+};
+
+const getTexturePoints = (name: string) => {
+  return {
+    leftTop: normalizeAtlasCoordinate(texturesCoords[name].x + 0.15, texturesCoords[name].y + 0.15),
+    leftBottom: normalizeAtlasCoordinate(texturesCoords[name].x + 0.15, (texturesCoords[name].y + texturesCoords[name].h) - 0.15),
+    rightTop: normalizeAtlasCoordinate((texturesCoords[name].x + texturesCoords[name].w) - 0.15, texturesCoords[name].y + 0.15),
+    rightBottom: normalizeAtlasCoordinate((texturesCoords[name].x + texturesCoords[name].w) - 0.15, (texturesCoords[name].y + texturesCoords[name].h) - 0.15),
+  };
+};
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -48,12 +66,15 @@ const textures: Record<string, THREE.Texture> = {
   stone: loadTexture(stone),
 };
 
+export const atlasMaterial = new THREE.MeshLambertMaterial({ map: loadTexture(atlas) });
+
 export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
   empty: {
     id: 0,
     name: 'empty',
     visible: false,
-    material: null,
+    material: undefined,
+    withRigidBody: false,
   },
   grass: {
     id: 1,
@@ -67,12 +88,30 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
       new THREE.MeshLambertMaterial({ map: textures.grassSide }), // front
       new THREE.MeshLambertMaterial({ map: textures.grassSide }),  // back
     ],
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('grass_side'),
+      left: getTexturePoints('grass_side'),
+      top: getTexturePoints('grass'),
+      bottom: getTexturePoints('dirt'),
+      front: getTexturePoints('grass_side'),
+      back: getTexturePoints('grass_side'),
+    },
   },
   dirt: {
     id: 2,
     name: 'dirt',
     visible: true,
     material: new THREE.MeshLambertMaterial({ map: textures.dirt }),
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('dirt'),
+      left: getTexturePoints('dirt'),
+      top: getTexturePoints('dirt'),
+      bottom: getTexturePoints('dirt'),
+      front: getTexturePoints('dirt'),
+      back: getTexturePoints('dirt'),
+    },
   },
   stone: {
     id: 3,
@@ -82,6 +121,15 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
     resource: 'stone',
     scale: { x: 30, y: 30, z: 30 },
     scarcity: 0.8,
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('stone'),
+      left: getTexturePoints('stone'),
+      top: getTexturePoints('stone'),
+      bottom: getTexturePoints('stone'),
+      front: getTexturePoints('stone'),
+      back: getTexturePoints('stone'),
+    },
   },
   coalOre: {
     id: 4,
@@ -91,6 +139,15 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
     resource: 'coal',
     scale: { x: 20, y: 20, z: 20 },
     scarcity: 0.8,
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('coal_ore'),
+      left: getTexturePoints('coal_ore'),
+      top: getTexturePoints('coal_ore'),
+      bottom: getTexturePoints('coal_ore'),
+      front: getTexturePoints('coal_ore'),
+      back: getTexturePoints('coal_ore'),
+    },
   },
   ironOre: {
     id: 5,
@@ -100,6 +157,7 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
     resource: 'iron',
     scale: { x: 40, y: 40, z: 40 },
     scarcity: 0.9,
+    withRigidBody: true,
   },
   tree: {
     id: 6,
@@ -113,24 +171,54 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
       new THREE.MeshLambertMaterial({ map: textures.treeSide }), // front
       new THREE.MeshLambertMaterial({ map: textures.treeSide }),  // back
     ],
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('tree_side'),
+      left: getTexturePoints('tree_side'),
+      top: getTexturePoints('tree_top'),
+      bottom: getTexturePoints('tree_top'),
+      front: getTexturePoints('tree_side'),
+      back: getTexturePoints('tree_side'),
+    },
   },
   leaves: {
     id: 7,
     name: 'leaves',
     visible: true,
     material: new THREE.MeshLambertMaterial({ map: textures.leaves }),
+    withRigidBody: false,
+    texturePoints: {
+      right: getTexturePoints('leaves'),
+      left: getTexturePoints('leaves'),
+      top: getTexturePoints('leaves'),
+      bottom: getTexturePoints('leaves'),
+      front: getTexturePoints('leaves'),
+      back: getTexturePoints('leaves'),
+    },
   },
   sand: {
     id: 8,
     name: 'sand',
     visible: true,
     material: new THREE.MeshLambertMaterial({ map: textures.sand }),
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('sand'),
+      left: getTexturePoints('sand'),
+      top: getTexturePoints('sand'),
+      bottom: getTexturePoints('sand'),
+      front: getTexturePoints('sand'),
+      back: getTexturePoints('sand'),
+    },
   },
   cloud: {
     id: 9,
     name: 'cloud',
     visible: true,
-    material: new THREE.MeshBasicMaterial({ color: 0xf0f0f0 }),
+    material: new THREE.MeshLambertMaterial({
+      color: 0xf0f0f0,
+    }),
+    withRigidBody: false,
   },
   snow: {
     id: 10,
@@ -144,6 +232,15 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
       new THREE.MeshLambertMaterial({ map: textures.snowSide }), // front
       new THREE.MeshLambertMaterial({ map: textures.snowSide }),  // back
     ],
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('snow_side'),
+      left: getTexturePoints('snow_side'),
+      top: getTexturePoints('snow'),
+      bottom: getTexturePoints('dirt'),
+      front: getTexturePoints('snow_side'),
+      back: getTexturePoints('snow_side'),
+    },
   },
   jungleTree: {
     id: 11,
@@ -157,12 +254,30 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
       new THREE.MeshLambertMaterial({ map: textures.jungleTreeSide }), // front
       new THREE.MeshLambertMaterial({ map: textures.jungleTreeSide }),  // back
     ],
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('jungle_tree_side'),
+      left: getTexturePoints('jungle_tree_side'),
+      top: getTexturePoints('jungle_tree_top'),
+      bottom: getTexturePoints('jungle_tree_top'),
+      front: getTexturePoints('jungle_tree_side'),
+      back: getTexturePoints('jungle_tree_side'),
+    },
   },
   jungleLeaves: {
     id: 12,
     name: 'jungleLeaves',
     visible: true,
     material: new THREE.MeshLambertMaterial({ map: textures.jungleLeaves }),
+    withRigidBody: false,
+    texturePoints: {
+      right: getTexturePoints('jungle_leaves'),
+      left: getTexturePoints('jungle_leaves'),
+      top: getTexturePoints('jungle_leaves'),
+      bottom: getTexturePoints('jungle_leaves'),
+      front: getTexturePoints('jungle_leaves'),
+      back: getTexturePoints('jungle_leaves'),
+    },
   },
   cactus: {
     id: 13,
@@ -176,6 +291,15 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
       new THREE.MeshLambertMaterial({ map: textures.cactusSide }), // front
       new THREE.MeshLambertMaterial({ map: textures.cactusSide }),  // back
     ],
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('cactus_side'),
+      left: getTexturePoints('cactus_side'),
+      top: getTexturePoints('cactus_top'),
+      bottom: getTexturePoints('cactus_top'),
+      front: getTexturePoints('cactus_side'),
+      back: getTexturePoints('cactus_side'),
+    },
   },
   jungleGrass: {
     id: 14,
@@ -189,6 +313,27 @@ export const blockTypes: Record<BlockName, Block | ResourceBlock> = {
       new THREE.MeshLambertMaterial({ color: 0x80c080, map: textures.grassSide }), // front
       new THREE.MeshLambertMaterial({ color: 0x80c080, map: textures.grassSide }),  // back
     ],
+    withRigidBody: true,
+    texturePoints: {
+      right: getTexturePoints('grass_side'),
+      left: getTexturePoints('grass_side'),
+      top: getTexturePoints('grass'),
+      bottom: getTexturePoints('dirt'),
+      front: getTexturePoints('grass_side'),
+      back: getTexturePoints('grass_side'),
+    },
+  },
+  water: {
+    id: 15,
+    name: 'water',
+    visible: true,
+    material: new THREE.MeshLambertMaterial({
+      color: 0x9090e0,
+      transparent: true,
+      opacity: 0.5,
+      side: THREE.DoubleSide,
+    }),
+    withRigidBody: false,
   },
 };
 

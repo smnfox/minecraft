@@ -8,6 +8,7 @@ import { Stats } from '@react-three/drei';
 import {Game} from './components/Game.tsx';
 import {setSeed, useGameStore} from './gameStore.ts';
 import * as THREE from 'three';
+import {chunkSize, drawDistance} from './worldParams.ts';
 
 const usePointerLockControlsStore = create(() => ({
   isLock: false,
@@ -18,7 +19,7 @@ const skyColor = new THREE.Color().setHex(0x80a0e0);
 export default function App() {
   const seed = useGameStore.getState().seed;
   if (!seed || isNaN(seed)) {
-    setSeed(Number((Math.random() * 1000).toFixed()));
+    setSeed(Math.floor((Math.random() * 1000)));
   }
 
   const pointerLockControlsLockHandler = () => {
@@ -39,7 +40,7 @@ export default function App() {
     ]}>
       <Canvas scene={{background: skyColor}}>
         <PointerLockControls onLock={pointerLockControlsLockHandler} onUnlock={pointerLockControlsUnlockHandler} />
-        <fog attach="fog" args={[0x80a0e0, 16, 32]} />
+        <fog attach="fog" args={[0x80a0e0, chunkSize.width * (drawDistance - 1), chunkSize.width * drawDistance]} />
         <ambientLight intensity={0.8} />
         <directionalLight
           intensity={1.5}

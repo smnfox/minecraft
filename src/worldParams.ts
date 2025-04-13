@@ -1,7 +1,7 @@
-export const drawDistance = 1;
+export const drawDistance = 3;
 export const chunkSize = {
-  width: 16,
-  height: 24,
+  width: 20,
+  height: 32,
 };
 export const params = {
   terrain: {
