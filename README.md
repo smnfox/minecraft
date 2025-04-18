@@ -1,5 +1,6 @@
 # Minecraft web version
-## Uses Vite + React + Typescript + R3F + Rapier ⚠️ WORK IN PROGRESS
+## ⚠️ WORK IN PROGRESS
+## Uses Vite + React + Typescript + R3F + Rapier
 
 
 ```
